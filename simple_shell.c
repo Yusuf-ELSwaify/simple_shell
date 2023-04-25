@@ -13,7 +13,7 @@ int main(void)
 	{
 		printf(PROMPT);
 		buffer = read_input();
-		if (strcmp(buffer, "\n") == 0)
+		if (is_empty(buffer))
 		{
 			free(buffer);
 			continue;
