@@ -23,4 +23,8 @@ int _strlen(char *str);
 char *read_input();
 int is_empty(char *buffer);
 
+/*print utility functions */
+int print(char *str);
+int print_err(char *str);
+
 #endif /* SHELL_H */

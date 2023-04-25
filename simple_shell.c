@@ -11,7 +11,7 @@ int main(void)
 
 	while (1)
 	{
-		printf(PROMPT);
+		print(PROMPT);
 		buffer = read_input();
 		if (is_empty(buffer))
 		{
