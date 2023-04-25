@@ -25,6 +25,6 @@ int is_empty(char *buffer);
 
 /*print utility functions */
 int print(char *str);
-int print_err(char *str);
+int print_err(char *err_reason, char *str);
 
 #endif /* SHELL_H */

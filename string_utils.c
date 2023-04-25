@@ -11,7 +11,12 @@ char **split_input(char *line)
 	char **args = malloc(MAX_TOKENS * sizeof(char *));
 
 	if (args == NULL)
-		perror(ERR_MALLOC), exit(EXIT_FAILURE);
+	{
+		print_err(NULL, ERR_MALLOC);
+		exit(EXIT_FAILURE);
+	}
+
+
 	args[num_args] = strtok(line, SPACES);
 	while (args[num_args] && num_args < (MAX_TOKENS - 1))
 		args[++num_args] = strtok(NULL, SPACES);

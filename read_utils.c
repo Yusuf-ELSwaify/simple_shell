@@ -10,8 +10,11 @@ char *read_input()
 	size_t bufsize = 1024;
 
 	if (getline(&buffer, &bufsize, stdin) == -1)
-		free(buffer), exit(EXIT_SUCCESS);
-
+	{
+		print("\n");
+		free(buffer);
+		exit(EXIT_SUCCESS);
+	}
 	return (buffer);
 }
 /**
