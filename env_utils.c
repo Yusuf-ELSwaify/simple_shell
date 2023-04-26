@@ -6,7 +6,6 @@
  */
 char *_getenv(const char *name)
 {
-	unsigned int i = 0;
 	char **env = environ, *env_ptr, *name_ptr;
 
 	while (*env != NULL)
@@ -71,4 +70,5 @@ char *_which(char *file)
 			return (command);
 		i++;
 	}
+	return (NULL);
 }

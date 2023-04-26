@@ -25,7 +25,6 @@ char *read_input()
  */
 int is_empty(char *buffer)
 {
-	int len = _strlen(buffer);
 	char *temp = buffer;
 
 	while (*temp != '\0')
