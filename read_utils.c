@@ -12,7 +12,8 @@ char *read_input()
 	if (getline(&buffer, &bufsize, stdin) == -1)
 	{
 		print("\n");
-		_abort(buffer);
+		free(buffer);
+		_exit(EXIT_SUCCESS);
 	}
 	return (buffer);
 }

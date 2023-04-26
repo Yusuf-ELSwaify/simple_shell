@@ -4,10 +4,8 @@
  * @buffer: input to free
  * Return: -1
  */
-int _abort(char *buffer)
+int _abort(char *buffer __attribute__((unused)))
 {
-	free(buffer);
-	exit(EXIT_SUCCESS);
 	return (-1);
 }
 /**

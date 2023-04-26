@@ -7,7 +7,8 @@ void make_process(char **args);
  */
 int main(void)
 {
-	char *buffer = NULL, **args;
+	char *buffer = NULL, *path, **args;
+	int builtin_status;
 
 	while (1)
 	{
@@ -19,13 +20,17 @@ int main(void)
 			continue;
 		}
 		args = split_input(buffer);
-		if (handle_builtins(args[0]))
+		path = _which(args[0]);
+		builtin_status = handle_builtins(args[0]);
+		if (builtin_status == -1)
 		{
 			free(buffer);
-			continue;
+			free(args);
+			_exit(EXIT_SUCCESS);
 		}
 		make_process(args);
 
+		free(path);
 		free(args);
 		free(buffer);
 	}
@@ -39,6 +44,7 @@ int main(void)
 void make_process(char **args)
 {
 	pid_t my_pid;
+	int status;
 	char *path = _which(args[0]);
 
 	my_pid = fork();
@@ -56,9 +62,10 @@ void make_process(char **args)
 		else
 			execve_status = execve(path, args, NULL);
 		if (execve_status == -1)
-			print_err(args[0], "Error: command not found\n");
+			print_err(args[0], "Error: command not found\n"), exit(EXIT_FAILURE);
 	}
 	else
-		wait(NULL);
+		waitpid(my_pid, &status, 0);
 	free(path);
 }
+
