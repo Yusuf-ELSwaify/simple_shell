@@ -17,6 +17,17 @@
 
 extern char **environ;
 
+/**
+ * struct command_type - Manage the commands function
+ * @cmd: the command line on string form
+ * @func: the associated function
+ */
+typedef struct command_type
+{
+	char *cmd;
+	int (*func)(char *);
+} cmd_t;
+
 /*string utility functions */
 char **split_string(char *str, char *delimeters);
 char *_strchr(char *s, char c);
@@ -24,6 +35,7 @@ int _strlen(char *str);
 char *_strcpy(char *dest, char *src);
 char *_strdup(char *str);
 char *_strcat(char *dest, char *src);
+int _strcmp(char *s1, char *s2);
 
 /*read utility functions */
 char *read_input();
@@ -36,5 +48,9 @@ int print_err(char *err_reason, char *str);
 
 /*enviroment utility functions */
 char *_which(char *file);
+
+/*my builtins*/
+int _abort(char *buffer);
+int handle_builtins(char *command);
 
 #endif /* SHELL_H */

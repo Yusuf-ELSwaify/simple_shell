@@ -1,4 +1,5 @@
 #include "shell.h"
+void make_process(char **args);
 /**
  * main - a simple shell entry point
  *
@@ -6,8 +7,7 @@
  */
 int main(void)
 {
-	pid_t my_pid;
-	char *buffer = NULL, *path, **args;
+	char *buffer = NULL, **args;
 
 	while (1)
 	{
@@ -19,31 +19,46 @@ int main(void)
 			continue;
 		}
 		args = split_input(buffer);
-		path = _which(args[0]);
-
-		my_pid = fork();
-		if (my_pid == -1)
+		if (handle_builtins(args[0]))
 		{
-			print_err(args[0], "Error: unable to create a process (fork)\n");
-			exit(EXIT_FAILURE);
+			free(buffer);
+			continue;
 		}
-		if (my_pid == 0)
-		{
-			int execve_status;
+		make_process(args);
 
-			if (path == NULL)
-				execve_status = execve(args[0], args, NULL);
-			else
-				execve_status = execve(path, args, NULL);
-			if (execve_status == -1)
-				print_err(args[0], "Error: command not found\n");
-		}
-		else
-			wait(NULL);
-		free(path);
 		free(args);
 		free(buffer);
 	}
 
 	return (0);
+}
+/**
+ * make_process - create child proccess
+ * @args: proccess arguments
+ */
+void make_process(char **args)
+{
+	pid_t my_pid;
+	char *path = _which(args[0]);
+
+	my_pid = fork();
+	if (my_pid == -1)
+	{
+		print_err(args[0], "Error: unable to create a process (fork)\n");
+		exit(EXIT_FAILURE);
+	}
+	if (my_pid == 0)
+	{
+		int execve_status;
+
+		if (path == NULL)
+			execve_status = execve(args[0], args, NULL);
+		else
+			execve_status = execve(path, args, NULL);
+		if (execve_status == -1)
+			print_err(args[0], "Error: command not found\n");
+	}
+	else
+		wait(NULL);
+	free(path);
 }
