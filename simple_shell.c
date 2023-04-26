@@ -29,7 +29,14 @@ int main(void)
 		}
 		if (my_pid == 0)
 		{
-			if (execve(path, args, NULL) == -1)
+			int execve_status;
+
+			if (path == NULL)
+				execve_status = execve(args[0], args, NULL);
+			else
+				execve_status = execve(path, args, NULL);
+
+			if (execve_status == -1)
 				print_err(args[0], "Error: command not found\n");
 		}
 		else

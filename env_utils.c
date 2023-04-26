@@ -11,7 +11,7 @@ char *_getenv(const char *name)
 
 	while (*env != NULL)
 	{
-		env_ptr = strdup(*env);
+		env_ptr = _strdup(*env);
 		name_ptr = (char *)name;
 		while (*env_ptr != '\0' && *name_ptr != '\0' && *env_ptr == *name_ptr)
 		{
@@ -38,7 +38,7 @@ char *concat_path(char *dest, char *src)
 
 	if (!result)
 		return (NULL);
-	strcpy(result, dest);
+	_strcpy(result, dest);
 	strcat(result, "/");
 	strcat(result, src);
 	return (result);
@@ -51,7 +51,7 @@ char *_which(char *filename)
 	struct stat st;
 
 	if (stat(filename, &st) == 0)
-		return (filename);
+		return (NULL);
 	path = _getenv("PATH");
 	tokens = split_string(path, ":");
 	while (tokens[i])

@@ -21,7 +21,8 @@ extern char **environ;
 char **split_string(char *str, char *delimeters);
 char *_strchr(char *s, char c);
 int _strlen(char *str);
-
+char *_strcpy(char *dest, char *src);
+char *_strdup(char *str);
 
 /*read utility functions */
 char *read_input();
@@ -32,6 +33,7 @@ char **split_input(char *line);
 int print(char *str);
 int print_err(char *err_reason, char *str);
 
+/*enviroment utility functions */
 char *_which(char *filename);
 
 #endif /* SHELL_H */

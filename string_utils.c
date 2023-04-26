@@ -54,3 +54,40 @@ char *_strchr(char *s, char c)
 	}
 	return (NULL);
 }
+/**
+ * _strcpy - copy string characters to another string
+ * @dest: pointer to array of characters copy in it
+ * @src: array we will copy from it
+ * Return: the pointer of the destination array
+ */
+char *_strcpy(char *dest, char *src)
+{
+	int i = -1;
+
+	do
+	{
+		i++;
+		dest[i] = src[i];
+	} while (src[i] != '\0');
+
+	return (dest);
+}
+/**
+ * _strdup - clone a string
+ * @str: the given string
+ *
+ * Return: (Success) a pointer to the clone
+ * ------- (Fail) return a null pointer
+ */
+char *_strdup(char *str)
+{
+	char *clone;
+
+	if (str == NULL)
+		return (NULL);
+	clone = malloc(_strlen(str) + 1);
+	if (clone == NULL)
+		return (NULL);
+	_strcpy(clone, str);
+	return (clone);
+}

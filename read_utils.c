@@ -30,7 +30,7 @@ int is_empty(char *buffer)
 
 	while (*temp != '\0')
 	{
-		if (strchr(SPACES, *temp) == NULL)
+		if (_strchr(SPACES, *temp) == NULL)
 			return (0);
 		temp++;
 	}
