@@ -1,5 +1,4 @@
 #include "shell.h"
-
 /**
  * read_input - read input from user.
  * Return: user input
@@ -9,7 +8,7 @@ char *read_input()
 	char *buffer = NULL;
 	size_t bufsize = 1024;
 
-	if (getline(&buffer, &bufsize, stdin) == -1)
+	if (read_line(&buffer, &bufsize, fileno(stdin)) == -1)
 	{
 		print("\n");
 		free(buffer);
