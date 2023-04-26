@@ -47,6 +47,11 @@ void make_process(char **args)
 	int status;
 	char *path = _which(args[0]);
 
+	if (path == NULL)
+	{
+		print_err(args[0], "Error: command not found\n");
+		return;
+	}
 	my_pid = fork();
 	if (my_pid == -1)
 	{
