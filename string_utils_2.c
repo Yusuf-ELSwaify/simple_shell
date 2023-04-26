@@ -45,35 +45,41 @@ int _strcmp(char *s1, char *s2)
  * @dest: integer to add in it
  * @number: the character we need to add in the integer
  */
-void add_number(unsigned int *dest, char number)
+void add_number(int *dest, char number)
 {
 	*dest *= 10;
 	*dest += number - '0';
 }
 
 /**
- * _atoi - turn string to integer
+ * exit_atoi - turn string to integer
  * @s: pointer to array of character
  * Return: the number
  */
-int _atoi(char *s)
+int exit_atoi(char *s)
 {
-	int i = 0, sign = 1;
-	unsigned int number = 0;
+	int i = 0;
+	int number = 0;
 
-	if (!s)
-		return (0);
+	if (!s || s[i] == '\0')
+		return (errno);
 	while (s[i] != '\0')
 	{
-		if (s[i] == '-')
+		if (s[i] < '0' || s[i] > '9')
 		{
-			sign = -sign;
-		}
-		else if (s[i] >= '0' && s[i] <= '9')
-			add_number(&number, s[i]);
-		else if (number > 0)
+			number = -1;
 			break;
+		}
+		else
+			add_number(&number, s[i]);
 		i++;
 	}
-	return (number * sign);
+	if (number < 0 || number > 255)
+	{
+		char *err = "Exit: Illegal number\n";
+
+		write(STDERR_FILENO, err, _strlen(err));
+		return (-1);
+	}
+	return (number);
 }

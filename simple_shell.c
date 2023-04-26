@@ -23,10 +23,11 @@ int main(void)
 		builtin_status = handle_builtins(args[0]);
 		if (builtin_status == -1 || builtin_status == 1)
 		{
-			int exit_code =_atoi(args[1]);
+			int exit_code = exit_atoi(args[1]);
+
 			free(buffer);
 			free(args);
-			if (builtin_status == -1)
+			if (builtin_status == -1 && exit_code != -1)
 				exit(exit_code);
 			continue;
 		}
