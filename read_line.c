@@ -55,7 +55,7 @@ ssize_t read_line(char **lineptr, size_t *n, int fd)
 		if (count == (ssize_t)*n)
 		{
 			*n *= 2;
-			buffer = realloc(*lineptr, *n);
+			buffer = _realloc(*lineptr, 0, *n);
 			if (buffer == NULL)
 				return (-1);
 			*lineptr = buffer;
