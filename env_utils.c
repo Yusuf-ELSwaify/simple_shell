@@ -61,7 +61,7 @@ char *_which(char *file)
 	struct stat st;
 
 	if (stat(file, &st) == 0)
-		return _strdup(file);
+		return (_strdup(file));
 	path = _getenv("PATH");
 	path = _strdup(path);
 	tokens = split_string(path, ":");

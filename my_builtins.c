@@ -1,10 +1,9 @@
 #include "shell.h"
 /**
  * _abort - exits the shell
- * @buffer: input to free
  * Return: -1
  */
-int _abort()
+int _abort(void)
 {
 	return (-1);
 }
@@ -13,7 +12,7 @@ int _abort()
  * shell_env - prints environment
  * Return: 0
  */
-int shell_env()
+int shell_env(void)
 {
 	unsigned int i = 0;
 
@@ -23,7 +22,7 @@ int shell_env()
 		write(STDOUT_FILENO, "\n", 1);
 		i++;
 	}
-	return (0);
+	return (1);
 }
 /**
  * handle_builtins - look for the command function

@@ -10,6 +10,7 @@
 #include <string.h>
 
 #define PROMPT "$ "
+#define BUFFER_SIZE 1024
 #define MAX_TOKENS 64
 #define SPACES " \n\t\r\f\v"
 
@@ -36,6 +37,7 @@ char *_strcpy(char *dest, char *src);
 char *_strdup(char *str);
 char *_strcat(char *dest, char *src);
 int _strcmp(char *s1, char *s2);
+int _atoi(char *s);
 
 /*read utility functions */
 char *read_input();
@@ -50,7 +52,7 @@ int print_err(char *err_reason, char *str);
 char *_which(char *file);
 
 /*my builtins*/
-int _abort();
+int _abort(void);
 int handle_builtins(char *command);
 
 #endif /* SHELL_H */

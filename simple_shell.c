@@ -23,10 +23,11 @@ int main(void)
 		builtin_status = handle_builtins(args[0]);
 		if (builtin_status == -1 || builtin_status == 1)
 		{
+			int exit_code =_atoi(args[1]);
 			free(buffer);
 			free(args);
 			if (builtin_status == -1)
-				exit(EXIT_SUCCESS);
+				exit(exit_code);
 			continue;
 		}
 		make_process(args);
@@ -60,12 +61,8 @@ void make_process(char **args)
 	}
 	if (my_pid == 0)
 	{
-		int execve_status;
+		int execve_status = execve(path, args, NULL);
 
-		if (path == NULL)
-			execve_status = execve(args[0], args, NULL);
-		else
-			execve_status = execve(path, args, NULL);
 		if (execve_status == -1)
 			print_err(args[0], "Error: command not found\n"), exit(EXIT_FAILURE);
 	}
@@ -73,4 +70,3 @@ void make_process(char **args)
 		waitpid(my_pid, &status, 0);
 	free(path);
 }
-
