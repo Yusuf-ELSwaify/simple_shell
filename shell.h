@@ -25,7 +25,7 @@ extern char **environ;
 typedef struct command_type
 {
 	char *cmd;
-	int (*func)(char *);
+	int (*func)();
 } cmd_t;
 
 /*string utility functions */
@@ -50,7 +50,7 @@ int print_err(char *err_reason, char *str);
 char *_which(char *file);
 
 /*my builtins*/
-int _abort(char *buffer);
+int _abort();
 int handle_builtins(char *command);
 
 #endif /* SHELL_H */

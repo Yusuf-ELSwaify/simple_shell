@@ -7,7 +7,7 @@ void make_process(char **args);
  */
 int main(void)
 {
-	char *buffer = NULL, *path, **args;
+	char *buffer = NULL, **args;
 	int builtin_status;
 
 	while (1)
@@ -20,17 +20,17 @@ int main(void)
 			continue;
 		}
 		args = split_input(buffer);
-		path = _which(args[0]);
 		builtin_status = handle_builtins(args[0]);
-		if (builtin_status == -1)
+		if (builtin_status == -1 || builtin_status == 1)
 		{
 			free(buffer);
 			free(args);
-			_exit(EXIT_SUCCESS);
+			if (builtin_status == -1)
+				exit(EXIT_SUCCESS);
+			continue;
 		}
 		make_process(args);
 
-		free(path);
 		free(args);
 		free(buffer);
 	}
