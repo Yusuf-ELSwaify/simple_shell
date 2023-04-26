@@ -7,7 +7,7 @@
 int main(void)
 {
 	pid_t my_pid;
-	char *buffer = NULL, **args;
+	char *buffer = NULL, *path, **args;
 
 	while (1)
 	{
@@ -19,22 +19,22 @@ int main(void)
 			continue;
 		}
 		args = split_input(buffer);
+		path = _which(args[0]);
 
 		my_pid = fork();
 		if (my_pid == -1)
 		{
-			//perror();
 			print_err(args[0], "Error: unable to create a process (fork)\n");
 			exit(EXIT_FAILURE);
 		}
 		if (my_pid == 0)
 		{
-			if (execve(args[0], args, NULL) == -1)
-				// perror("Error: command not found\n");
+			if (execve(path, args, NULL) == -1)
 				print_err(args[0], "Error: command not found\n");
 		}
 		else
 			wait(NULL);
+		free(path);
 		free(args);
 		free(buffer);
 	}

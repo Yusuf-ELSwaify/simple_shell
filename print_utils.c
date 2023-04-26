@@ -24,5 +24,5 @@ int print_err(char *err_reason, char *str)
 {
 	write(STDERR_FILENO, str, _strlen(str));
 	perror(err_reason);
-	return -1;
+	return (-1);
 }

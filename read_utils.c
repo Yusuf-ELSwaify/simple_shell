@@ -36,3 +36,12 @@ int is_empty(char *buffer)
 	}
 	return (1);
 }
+/**
+ * split_input - split the line by spaces.
+ * @line: line to split
+ * Return: splitted arguments
+ */
+char **split_input(char *line)
+{
+	return (split_string(line, SPACES));
+}

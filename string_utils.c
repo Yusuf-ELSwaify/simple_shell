@@ -1,11 +1,12 @@
 #include "shell.h"
 
 /**
- * split_input - split the line by delimeters.
- * @line: line to split
- * Return: splitted arguments
+ * split_string - split the line by delimeters.
+ * @str: string to split
+ * @delimeters: delimeters you need to split your string by
+ * Return: splitted strings
  */
-char **split_input(char *line)
+char **split_string(char *str, char *delimeters)
 {
 	int num_args = 0;
 	char **args = malloc(MAX_TOKENS * sizeof(char *));
@@ -16,10 +17,9 @@ char **split_input(char *line)
 		exit(EXIT_FAILURE);
 	}
 
-
-	args[num_args] = strtok(line, SPACES);
+	args[num_args] = strtok(str, delimeters);
 	while (args[num_args] && num_args < (MAX_TOKENS - 1))
-		args[++num_args] = strtok(NULL, SPACES);
+		args[++num_args] = strtok(NULL, delimeters);
 
 	args[num_args] = NULL;
 	return (args);
