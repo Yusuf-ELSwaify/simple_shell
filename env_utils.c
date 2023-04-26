@@ -30,33 +30,43 @@ char *_getenv(const char *name)
 	}
 	return (NULL);
 }
-char *concat_path(char *dest, char *src)
+/**
+ * concat_path - concatenate the command enviroment path with command
+ * @path: the path of the command in enviroment variable
+ * @command: the command
+ * Return: the path concatenate the command
+ */
+char *concat_path(char *path, char *command)
 {
-	int dest_len = _strlen(dest);
-	int src_len = _strlen(src);
-	char *result = malloc(dest_len + src_len + 2);
+	int path_len = _strlen(path);
+	int command_len = _strlen(command);
+	char *result = malloc(path_len + command_len + 2);
 
 	if (!result)
 		return (NULL);
-	_strcpy(result, dest);
-	strcat(result, "/");
-	strcat(result, src);
+	_strcpy(result, path);
+	_strcat(result, "/");
+	_strcat(result, command);
 	return (result);
 }
-
-char *_which(char *filename)
+/**
+ * _which - get the full path of any file
+ * @file: file to get path
+ * Return: the full path
+ */
+char *_which(char *file)
 {
 	unsigned int i = 0;
 	char **tokens, *path, *command;
 	struct stat st;
 
-	if (stat(filename, &st) == 0)
+	if (stat(file, &st) == 0)
 		return (NULL);
 	path = _getenv("PATH");
 	tokens = split_string(path, ":");
 	while (tokens[i])
 	{
-		command = concat_path(tokens[i], filename);
+		command = concat_path(tokens[i], file);
 		if (stat(command, &st) == 0)
 			return (command);
 		i++;

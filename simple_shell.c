@@ -35,7 +35,6 @@ int main(void)
 				execve_status = execve(args[0], args, NULL);
 			else
 				execve_status = execve(path, args, NULL);
-
 			if (execve_status == -1)
 				print_err(args[0], "Error: command not found\n");
 		}

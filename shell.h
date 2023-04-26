@@ -23,6 +23,7 @@ char *_strchr(char *s, char c);
 int _strlen(char *str);
 char *_strcpy(char *dest, char *src);
 char *_strdup(char *str);
+char *_strcat(char *dest, char *src);
 
 /*read utility functions */
 char *read_input();
@@ -34,6 +35,6 @@ int print(char *str);
 int print_err(char *err_reason, char *str);
 
 /*enviroment utility functions */
-char *_which(char *filename);
+char *_which(char *file);
 
 #endif /* SHELL_H */
