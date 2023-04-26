@@ -10,21 +10,17 @@ char *_getenv(const char *name)
 
 	while (*env != NULL)
 	{
-		env_ptr = _strdup(*env);
+		env_ptr = *env;
 		name_ptr = (char *)name;
 		while (*env_ptr != '\0' && *name_ptr != '\0' && *env_ptr == *name_ptr)
 		{
 			if (*env_ptr == '=')
-			{
-				free(env_ptr);
 				break;
-			}
 			env_ptr++;
 			name_ptr++;
 		}
-		if (*env_ptr == '=')
-			if (*name_ptr == '\0')
-				return (env_ptr + 1);
+		if (*env_ptr == '=' && *name_ptr == '\0')
+			return (env_ptr + 1);
 		env++;
 	}
 	return (NULL);
@@ -32,20 +28,25 @@ char *_getenv(const char *name)
 /**
  * concat_path - concatenate the command enviroment path with command
  * @path: the path of the command in enviroment variable
- * @command: the command
+ * @file: the command
  * Return: the path concatenate the command
  */
-char *concat_path(char *path, char *command)
+char *concat_path(char *path, char *file)
 {
-	int path_len = _strlen(path);
-	int command_len = _strlen(command);
-	char *result = malloc(path_len + command_len + 2);
+	int i = 0, j = 0;
+	char *result;
 
+	result = malloc((_strlen(path) + _strlen(file) + 2) * sizeof(char));
 	if (!result)
 		return (NULL);
-	_strcpy(result, path);
-	_strcat(result, "/");
-	_strcat(result, command);
+	*result = '\0';
+	while (path[j])
+		result[i++] = path[j++];
+	result[i++] = '/';
+	j = 0;
+	while (file[j])
+		result[i++] = file[j++];
+	result[i] = '\0';
 	return (result);
 }
 /**
@@ -62,13 +63,21 @@ char *_which(char *file)
 	if (stat(file, &st) == 0)
 		return (NULL);
 	path = _getenv("PATH");
+	path = _strdup(path);
 	tokens = split_string(path, ":");
 	while (tokens[i])
 	{
 		command = concat_path(tokens[i], file);
 		if (stat(command, &st) == 0)
+		{
+			free(tokens);
+			free(path);
 			return (command);
+		}
 		i++;
+		free(command);
 	}
+	free(path);
+	free(tokens);
 	return (NULL);
 }
