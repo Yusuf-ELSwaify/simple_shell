@@ -55,11 +55,7 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *fd)
 		if (count == (ssize_t)*n)
 		{
 			*n *= 2;
-<<<<<<< HEAD
 			buffer = _realloc(*lineptr, count, *n);
-=======
-			buffer = _realloc(*lineptr, 0, *n);
->>>>>>> origin/main
 			if (buffer == NULL)
 				return (-1);
 			*lineptr = buffer;

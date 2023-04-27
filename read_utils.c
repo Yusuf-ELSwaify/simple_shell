@@ -12,7 +12,7 @@ char *read_input()
 	{
 		print("\n");
 		free(buffer);
-		_exit(EXIT_SUCCESS);
+		exit(EXIT_SUCCESS);
 	}
 	return (buffer);
 }
