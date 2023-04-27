@@ -28,13 +28,13 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 	return (new_ptr);
 }
 /**
- * read_line - read a line from a file or standard input
+ * _getline - read a line from a file or standard input
  * @lineptr: ptr to point to the input
  * @n: buffer size
  * @fd: the file descriptor
  * Return: the size of string
  */
-ssize_t read_line(char **lineptr, size_t *n, int fd)
+ssize_t _getline(char **lineptr, size_t *n, FILE *fd)
 {
 	ssize_t count = 0;
 	int c = 0;
@@ -48,14 +48,14 @@ ssize_t read_line(char **lineptr, size_t *n, int fd)
 		*n = BUFFER_SIZE;
 	}
 	buffer = *lineptr;
-	while (read(fd, &c, 1) == 1)
+	while (read(fileno(fd), &c, 1) == 1)
 	{
 		buffer[count] = c;
 		count++;
 		if (count == (ssize_t)*n)
 		{
 			*n *= 2;
-			buffer = realloc(*lineptr, *n);
+			buffer = _realloc(*lineptr, count, *n);
 			if (buffer == NULL)
 				return (-1);
 			*lineptr = buffer;

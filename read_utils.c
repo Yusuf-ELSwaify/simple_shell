@@ -8,7 +8,7 @@ char *read_input()
 	char *buffer = NULL;
 	size_t bufsize = 1024;
 
-	if (read_line(&buffer, &bufsize, fileno(stdin)) == -1)
+	if (_getline(&buffer, &bufsize, stdin) == -1)
 	{
 		print("\n");
 		free(buffer);

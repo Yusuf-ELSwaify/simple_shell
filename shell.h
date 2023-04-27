@@ -56,6 +56,6 @@ int _abort(void);
 int handle_builtins(char *command);
 
 /*read_line function*/
-ssize_t read_line(char **lineptr, size_t *n, int fd);
+ssize_t _getline(char **lineptr, size_t *n, FILE *fd);
 
 #endif /* SHELL_H */
