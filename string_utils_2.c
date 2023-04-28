@@ -9,11 +9,11 @@ char *_strcat(char *dest, char *src)
 {
 	int i = 0, j = 0;
 
-	while (dest[i++] != 0)
-		;
-	i--;
+	while (dest[i] != 0)
+		i++;
 	while (src[j] != 0)
 		dest[i++] = src[j++];
+	dest[i] = '\0';
 	return (dest);
 }
 /**
@@ -51,6 +51,32 @@ void add_number(unsigned int *dest, char number)
 	*dest += number - '0';
 }
 /**
+ * _atoi - turn string to integer
+ * @s: pointer to array of character
+ * Return: the number
+ */
+int _atoi(char *s)
+{
+	int i = 0, sign = 1;
+	unsigned int number = 0;
+
+	if (s == NULL)
+		return (0);
+	while (s[i] != '\0')
+	{
+		if (s[i] == '-')
+		{
+			sign = -sign;
+		}
+		else if (s[i] >= '0' && s[i] <= '9')
+			add_number(&number, s[i]);
+		else if (number > 0)
+			break;
+		i++;
+	}
+	return (number * sign);
+}
+/**
  * exit_atoi - turn string to integer
  * @s: pointer to array of character
  * Return: the number
@@ -58,22 +84,28 @@ void add_number(unsigned int *dest, char number)
 int exit_atoi(char *s)
 {
 	int i = 0;
-	unsigned int number = 0;
 
-	if (s == NULL)
+	if (s == NULL || s[i] == '\0')
 		return (0);
+		
 	while (s[i] != '\0')
 	{
-		if (s[i] >= '0' && s[i] <= '9')
-			add_number(&number, s[i]);
-		else
+		if (s[i] < '0' || s[i] > '9')
 		{
-			char *err = "Exit: Illegal number\n";
+			char *err_str;
+			int len;
 
-			write(STDERR_FILENO, err, _strlen(err));
+			len = 16 + _strlen(s);
+			err_str = malloc(sizeof(char) * (len + 1));
+			err_str[len] = '\0';
+			strcpy(err_str, "Illegal number: ");
+			_strcat(err_str, s);
+			print_err(_strdup("exit"), err_str);
+			free(err_str);
+			program_ret = 2;
 			return (-1);
 		}
 		i++;
 	}
-	return (number);
+	return (_atoi(s));
 }

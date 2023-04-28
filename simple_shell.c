@@ -1,17 +1,29 @@
 #include "shell.h"
 void make_process(char **args);
+
+/* Global program name */
+char *program_name;
+/* Global counter */
+int program_count;
+/* Global return value */
+int program_ret;
+
 /**
  * main - a simple shell entry point
- *
+ * @argc: count of arguments
+ * @argv: arguments
  * Return: Always 0.
  */
-int main(void)
+int main(int argc __attribute__((__unused__)), char *argv[])
 {
 	char *buffer = NULL, **args;
 	int builtin_status;
 
+	program_name = argv[0];
+	program_count = 0, program_ret = 0;
 	while (1)
 	{
+		++program_count;
 		print(PROMPT);
 		buffer = read_input();
 		if (is_empty(buffer))
@@ -27,6 +39,8 @@ int main(void)
 
 			free(buffer);
 			free(args);
+			if (exit_code == 0)
+				exit(program_ret);
 			if (builtin_status == -1 && exit_code != -1)
 				exit(exit_code);
 			continue;
@@ -37,7 +51,7 @@ int main(void)
 		free(buffer);
 	}
 
-	return (0);
+	exit(program_ret);
 }
 /**
  * make_process - create child proccess
@@ -51,23 +65,42 @@ void make_process(char **args)
 
 	if (path == NULL)
 	{
-		print_err(args[0], "Error: command not found\n");
+		if (errno == EACCES)
+		{
+			print_err(args[0], "Permission denied");
+			program_ret = 126;
+		}
+		else
+		{
+			print_err(args[0], "not found");
+			program_ret = 127;
+		}
 		return;
 	}
 	my_pid = fork();
 	if (my_pid == -1)
 	{
-		print_err(args[0], "Error: unable to create a process (fork)\n");
+		print_err(args[0], "Error: unable to create a process (fork)");
 		exit(EXIT_FAILURE);
 	}
 	if (my_pid == 0)
 	{
-		int execve_status = execve(path, args, NULL);
+		execve(path, args, environ);
 
-		if (execve_status == -1)
-			print_err(args[0], "Error: command not found\n"), exit(EXIT_FAILURE);
+		if (errno == EACCES)
+		{
+			print_err(args[0], "Permission denied");
+			program_ret = 126;
+		}
+
 	}
 	else
-		waitpid(my_pid, &status, 0);
+	{
+		wait(&status);
+		if (WIFEXITED(status))
+			program_ret = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			program_ret = WIFSIGNALED(status);
+	}
 	free(path);
 }

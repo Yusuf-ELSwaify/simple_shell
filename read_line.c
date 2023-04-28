@@ -20,8 +20,11 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 		return (ptr);
 	new_ptr = malloc(new_size);
 
-	if (!new_ptr)
+	if (new_ptr == NULL)
+	{
+		free(ptr);
 		return (NULL);
+	}
 	while (ptr && ++i < old_size)
 		((char *)new_ptr)[i] = ((char *)ptr)[i];
 	free(ptr);
@@ -36,10 +39,13 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
  */
 ssize_t _getline(char **lineptr, size_t *n, FILE *fd)
 {
-	ssize_t count = 0;
-	int c = 0;
+	static ssize_t count;
+	int c = 0, r, ret;
 	char *buffer = NULL;
 
+	if (count != 0)
+		return (-1);
+	fflush(fd);
 	if (lineptr == NULL || n == NULL)
 		return (-1);
 	if (*lineptr == NULL || *n == 0)
@@ -48,8 +54,13 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *fd)
 		*n = BUFFER_SIZE;
 	}
 	buffer = *lineptr;
-	while (read(fileno(fd), &c, 1) == 1)
+	while (c != '\n')
 	{
+		r = read(STDIN_FILENO, &c, 1);
+		if (r == -1 || (r == 0 && count == 0))
+			return (-1);
+		if (r == 0 && count != 0 && count++)
+			break;
 		buffer[count] = c;
 		count++;
 		if (count == (ssize_t)*n)
@@ -60,14 +71,12 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *fd)
 				return (-1);
 			*lineptr = buffer;
 		}
-		if (c == '\n')
-		{
-			buffer[count] = '\0';
-			return (count);
-		}
 	}
+	ret = count;
 	if (count == 0)
 		return (-1);
 	buffer[count] = '\0';
-	return (count);
+	if (r != 0)
+		count = 0;
+	return (ret);
 }

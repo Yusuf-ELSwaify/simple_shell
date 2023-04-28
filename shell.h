@@ -8,15 +8,24 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 #define PROMPT "$ "
 #define BUFFER_SIZE 1024
 #define MAX_TOKENS 64
 #define SPACES " \n\t\r\f\v"
 
-#define ERR_MALLOC "Error: unable to allocate space\n"
+#define ERR_MALLOC "Error: unable to allocate space"
 
 extern char **environ;
+
+
+/* Global program name */
+extern char *program_name;
+/* Global counter */
+extern int program_count;
+/* Global return value */
+extern int program_ret;
 
 /**
  * struct command_type - Manage the commands function
@@ -37,7 +46,9 @@ char *_strcpy(char *dest, char *src);
 char *_strdup(char *str);
 char *_strcat(char *dest, char *src);
 int _strcmp(char *s1, char *s2);
+int _atoi(char *s);
 int exit_atoi(char *s);
+char *_itoa(int num);
 
 /*read utility functions */
 char *read_input();

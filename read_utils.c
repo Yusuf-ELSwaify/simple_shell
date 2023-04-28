@@ -6,13 +6,15 @@
 char *read_input()
 {
 	char *buffer = NULL;
+	ssize_t read = 0;
 	size_t bufsize = 1024;
 
-	if (_getline(&buffer, &bufsize, stdin) == -1)
+	read = _getline(&buffer, &bufsize, stdin);
+	if (read == -1)
 	{
 		print("\n");
 		free(buffer);
-		exit(EXIT_SUCCESS);
+		exit(program_ret);
 	}
 	return (buffer);
 }
