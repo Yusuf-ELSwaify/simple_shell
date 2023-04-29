@@ -87,7 +87,7 @@ int exit_atoi(char *s)
 
 	if (s == NULL || s[i] == '\0')
 		return (0);
-		
+
 	while (s[i] != '\0')
 	{
 		if (s[i] < '0' || s[i] > '9')
